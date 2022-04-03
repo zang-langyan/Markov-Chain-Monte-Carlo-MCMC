@@ -11,3 +11,7 @@ This repository is only for study and practice purposes
 1. Metropolis Algorithm
 2. Gibbs Sampling (to be added)
 3. Hamiltonian Monte Carlo (HMC) (to be added)
+
+注：下载 `README.md` 文件来查看公式
+
+Note： Download `README.md` file to view the formulas
