@@ -2,6 +2,10 @@
 
 This repository is only for study and practice purposes
 
+下载本文件来查看公式
+
+Download this file to view the formulas
+
 # Metropolis 算法
 
 假设随机变量 $X$ 服从一个概率密度函数 $P$. 在贝叶斯分析中, 是 $\theta$ 服从一个后验概率分布 $p(\theta|D)$
