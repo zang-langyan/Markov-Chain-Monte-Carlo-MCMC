@@ -32,7 +32,7 @@ class MCMC:
     >>> density = lambda x: scipy.stats.gamma(2,loc=4,scale=5).pdf(x)
     >>> d = metropolis.MCMC(density, chain = 10000, jumpdist=scipy.stats.norm(loc=0,scale=2), space = [0,np.inf])
     >>> d
-    <Metropolis.MCMC object ...>
+    <metropolis.MCMC object ...>
     """
     def __init__(self, 
                  dfunc, 
