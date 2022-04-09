@@ -2,7 +2,7 @@ using Distributions
 using Random
 
 """ # Configuration for MCMC
-    MCMC_Config([chain::Int, init::Real, jump, posterior, space::AbstractVector, burnin::Int, rng]) -> MCMC_Config
+    MCMC_Config([chain::Int, [init::Real, [jump, [posterior, [space::AbstractVector, [burnin::Int, rng]]]]]]) -> MCMC_Config
 * `chain::Int` - the length of Markov Chain to be generated (default 10000)
 * `init::Real` - initial value for the chain of θ (default 0.5)
 * `jump` - the distribution that proposed jump (Δθ) follows (default Distributions.Normal(0,0.2))
@@ -31,7 +31,7 @@ Compute a Markov Chain using Metropolis Algorithm
 ## arguments
 * `dfunc`
     - (`::Symbol`) the Symbol of self-defined density function
-    - (`::var(#)`) a anonymous function of the density function
+    - (`::var(#)`) an anonymous function of the density function
 * `chain::Int` - the length of Markov Chain to be generated
 * `theta_init::Real` - initial value for the chain of θ (default 0.5)
 
@@ -92,7 +92,7 @@ function metropolis(dfunc, chain::Int, theta_init::Real; jump = Normal(0,0.2), s
             posterior = dfunc
         end
     catch
-        print("dfunc must be a self-defined function name or an anonymous")
+        print("dfunc must be a self-defined function name or an anonymous function")
     end
 
     θ_cur = theta_init
