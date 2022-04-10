@@ -12,6 +12,10 @@ This repository is only for study and practice purposes
 2. Gibbs Sampling (to be added)
 3. Hamiltonian Monte Carlo (HMC) (to be added)
 
-注：下载 `README.md` 文件来查看公式
+注：下载 `README.md` 文件来查看公式或使用谷歌浏览器打开，下载"MathJax Plugin for Github"的插件
 
-Note： Download `README.md` file to view the formulas
+```diff
+- !NOTE: To View the Formulas:
+@@ a chrome plugin "MathJax Plugin for Github" is suggested @@
+@@ or one can download the markdown file to view the formulas @@
+```

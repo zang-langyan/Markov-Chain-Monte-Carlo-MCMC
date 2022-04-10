@@ -2,9 +2,13 @@
 
 This repository is only for study and practice purposes
 
-下载本文件来查看公式
+注：下载 `README.md` 文件来查看公式或使用谷歌浏览器打开，下载"MathJax Plugin for Github"的插件
 
-Download this file to view the formulas
+```diff
+- !NOTE: To View the Formulas:
+@@ a chrome plugin "MathJax Plugin for Github" is suggested @@
+@@ or one can download the markdown file to view the formulas @@
+```
 
 # Metropolis 算法
 
