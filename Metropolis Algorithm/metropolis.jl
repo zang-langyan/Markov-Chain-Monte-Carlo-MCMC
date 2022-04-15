@@ -39,7 +39,7 @@ Compute a Markov Chain using Metropolis Algorithm
 * `rng` - random seed (default nothing), set `rng = 0` to use seed `MersenneTwister(0)`
 
 # Examples
-```julia-repo
+```julia
 julia> p(θ) = Distributions.pdf(Beta(15,7),θ) # define a density function
 
 julia> metropolis(p, 5000, 0.5; jump = Normal(0,0.2), space_min = 0, space_max = 1, burnin = 1000, rng = 42)
