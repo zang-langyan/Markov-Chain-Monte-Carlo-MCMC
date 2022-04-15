@@ -6,9 +6,7 @@ using Random
 * `chain::Int` - the length of Markov Chain to be generated (default 10000)
 * `init::Real` - initial value for the chain of θ (default 0.5)
 * `jump` - the distribution that proposed jump (Δθ) follows (default Distributions.Normal(0,0.2))
-* `posterior` 
-    - (`::Symbol`) the Symbol of self-defined density function
-    - (`::var(#)`) a anonymous function of the density function (default θ -> Distributions.pdf(Beta(15,7),θ))
+* `posterior::Function` - the self-defined density function (default θ -> Distributions.pdf(Beta(15,7),θ))
 * `space::AbstractVector` - the accepted span of the parameter θ [min,max] (default [0,1])
 * `burnin::Int` - the length of the chain to be burned from the beginning (default 0)
 * `rng` - random seed (default 42), set `rng = nothing` to use no random seed
@@ -17,7 +15,7 @@ Base.@kwdef struct MCMC_Config
     chain::Int = 10000
     init::Real = 0.5
     jump = Distributions.Normal(0,0.2)
-    posterior = θ -> Distributions.pdf(Beta(15,7),θ) # posterior = :p
+    posterior::Function = θ -> Distributions.pdf(Beta(15,7),θ)
     space::AbstractVector = [0,1]
     burnin::Int = 0
     rng = 42
@@ -29,9 +27,7 @@ Compute a Markov Chain using Metropolis Algorithm
 
 # Parameters
 ## arguments
-* `dfunc`
-    - (`::Symbol`) the Symbol of self-defined density function
-    - (`::var(#)`) an anonymous function of the density function
+* `dfunc::Function` - the self-defined density function
 * `chain::Int` - the length of Markov Chain to be generated
 * `theta_init::Real` - initial value for the chain of θ (default 0.5)
 
@@ -46,7 +42,7 @@ Compute a Markov Chain using Metropolis Algorithm
 ```julia-repo
 julia> p(θ) = Distributions.pdf(Beta(15,7),θ) # define a density function
 
-julia> metropolis(:p, 5000, 0.5; jump = Normal(0,0.2), space_min = 0, space_max = 1, burnin = 1000, rng = 42)
+julia> metropolis(p, 5000, 0.5; jump = Normal(0,0.2), space_min = 0, space_max = 1, burnin = 1000, rng = 42)
 4000-element Vector{Float64}:
  0.7254870615709366
  0.5374079418869023
@@ -83,17 +79,8 @@ julia> @time metropolis(θ -> Distributions.pdf(Beta(15,7),θ), 10000, 0.5; jump
 
 ```
 """
-function metropolis(dfunc, chain::Int, theta_init::Real; jump = Normal(0,0.2), space_min::Real = -Inf, space_max::Real = Inf, burnin::Int = 0, rng = nothing)
-    posterior = 0 # initialize posterior to the outer scope
-    try
-        if typeof(dfunc) == Symbol
-            posterior = getfield(Main,dfunc)
-        else
-            posterior = dfunc
-        end
-    catch
-        print("dfunc must be a self-defined function name or an anonymous function")
-    end
+function metropolis(dfunc::Function, chain::Int, theta_init::Real; jump = Normal(0,0.2), space_min::Real = -Inf, space_max::Real = Inf, burnin::Int = 0, rng = nothing)
+    dfunc = dfunc # initialize posterior to the outer scope
 
     θ_cur = theta_init
     θ_freq = [theta_init]
@@ -106,10 +93,10 @@ function metropolis(dfunc, chain::Int, theta_init::Real; jump = Normal(0,0.2), s
 
         if θ_pro < space_min || θ_pro > space_max
             pmoving = 0
-        elseif posterior(θ_cur) == 0
+        elseif dfunc(θ_cur) == 0
             pmoving = 1
         else
-            pmoving = min(1, posterior(θ_pro)/posterior(θ_cur))
+            pmoving = min(1, dfunc(θ_pro)/dfunc(θ_cur))
         end
 
         if rand() <= pmoving
@@ -159,7 +146,7 @@ julia> metropolis(Config)
 
 julia> p(θ) = Distributions.pdf(Gamma(1,2),θ) # define a density function
 
-julia> Config = MCMC_Config(chain = 5000, jump = Distributions.TDist(5), space = [0,Inf], posterior = :p, burnin = 500, rng = nothing)
+julia> Config = MCMC_Config(chain = 5000, jump = Distributions.TDist(5), space = [0,Inf], posterior = p, burnin = 500, rng = nothing)
 
 julia> metropolis(Config)
 4500-element Vector{Float64}:
