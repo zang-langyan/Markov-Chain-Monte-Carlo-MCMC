@@ -117,7 +117,7 @@ class MCMC:
 
             if theta_pro < self.space[0] or theta_pro > self.space[1]:
                 pmoving = 0
-            elif self.dfunc(theta_pro) == 0:
+            elif self.dfunc(theta_cur) == 0:
                 pmoving = 1
             else:
                 pmoving = min(1,self.dfunc(theta_pro)/self.dfunc(theta_cur))
